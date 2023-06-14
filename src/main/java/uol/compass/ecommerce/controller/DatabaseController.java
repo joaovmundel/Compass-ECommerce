@@ -21,32 +21,9 @@ public class DatabaseController {
         try (Connection con = getConnection(); Statement statement = con.createStatement();) {
             statement.execute(sqlProducts);
         } catch (SQLException e) {
+            System.out.println("Cheque as configuracoes de banco de dados.");
             e.printStackTrace();
         }
     }
-
-    public boolean hasStock(Integer productID) {
-        String sql = "select quantity from products where id = ?";
-        try (Connection con = getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, productID);
-            return pstmt.executeQuery().next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    public Integer getStock(Integer productID){
-        String sql = "select quantity from products where id = ?";
-        try(Connection con = getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)){
-            pstmt.setInt(1, productID);
-            return pstmt.executeQuery().getInt("quantity");
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
 
 }

@@ -1,6 +1,7 @@
 package uol.compass.ecommerce.model;
 
 import uol.compass.ecommerce.controller.DatabaseController;
+import uol.compass.ecommerce.controller.ProductController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,14 +9,20 @@ import java.util.HashMap;
 public class Cart {
     private HashMap<Integer, Integer> products;
     private Double total;
+    private DatabaseController db;
 
+    public Cart(HashMap<Integer, Integer> products, Double total, DatabaseController db) {
+        this.products = products;
+        this.total = total;
+        this.db = db;
+    }
 
     public boolean hasProduct(Integer productID){
         return this.products.containsKey(productID) && this.products.get(productID) > 0;
     }
     public void addProduct(Integer productID, Integer quantity) {
-        DatabaseController db = new DatabaseController();
-        if (db.hasStock(productID) && db.getStock(productID) >= quantity) {
+        ProductController productController = new ProductController(this.db);
+        if (productController.hasStock(productID) && productController.getStock(productID) >= quantity) {
             if (hasProduct(productID)) {
                 this.products.put(productID, products.get(productID) + quantity);
             } else {
@@ -25,7 +32,7 @@ public class Cart {
             System.out.println("Atualmente voce tem " + this.products.get(productID) + " desse produto no carrinho.");
         } else {
             System.out.println("Nao temos estoque o suficiente para essa quantidade do produto.");
-            System.out.println("Temos apenas " + db.getStock(productID) + " no estoque.");
+            System.out.println("Temos apenas " + productController.getStock(productID) + " no estoque.");
         }
     }
 

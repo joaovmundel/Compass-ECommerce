@@ -13,6 +13,10 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 - Confirmação de compra
 - Atualização do estoque pós venda
 
+## Requisitos
+
+- Acesso a banco de dados MySQL. As configurações do banco podem ser feitas dentro do programa.
+
 ## Stack utilizada
 
 **Back-end:** Java 17, MySQL 8.0
@@ -20,5 +24,5 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 
 ## Autores
 
-- [@Joao Victor Mundel](https://www.github.com/joao100101)
+- Desenvolvido por [Joao Victor Mundel](https://www.github.com/joao100101).
 
