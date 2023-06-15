@@ -18,6 +18,7 @@ public class Menus {
 
     public void showMainMenu(){
         this.option = -1;
+        System.out.println("");
         System.out.println(HEADER);
         System.out.println("1- Entrar como GERENTE");
         System.out.println("2- Entrar como CLIENTE");
@@ -30,13 +31,15 @@ public class Menus {
 
     public void showConfigMenu(){
         this.option = -1;
+        System.out.println("");
         System.out.println(HEADER);
         System.out.println("1- Configurar HOST MySQL");
         System.out.println("2- Configurar PORTA MySQL");
         System.out.println("3- Configurar DATABASE MySQL");
         System.out.println("4- Configurar USUARIO MySQL");
         System.out.println("5- Configurar SENHA MySQL");
-        System.out.println("6- Voltar");
+        System.out.println("6- Testar conexao");
+        System.out.println("7- Voltar");
         System.out.println("0- Sair");
         System.out.println(FOOTER);
         requestUserInput();
@@ -45,13 +48,16 @@ public class Menus {
 
     public void showManagerMenu(){
         this.option = -1;
+        System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Adicionar novo produto");
-        System.out.println("2- Deletar produto existente");
-        System.out.println("3- Editar produto existente");
-        System.out.println("3- Adicionar estoque de produto existente");
-        System.out.println("4- Remover estoque de produto existente");
-        System.out.println("5- Alterar preco de produto existente");
+        System.out.println("1- Listar produtos");
+        System.out.println("2- Adicionar novo produto");
+        System.out.println("3- Deletar produto existente");
+        System.out.println("4- Editar produto existente");
+        System.out.println("5- Adicionar estoque de produto existente");
+        System.out.println("6- Remover estoque de produto existente");
+        System.out.println("7- Alterar preco de produto existente");
+        System.out.println("8- Voltar");
         System.out.println("0- Sair");
         System.out.println(FOOTER);
         requestUserInput();
@@ -60,6 +66,7 @@ public class Menus {
 
     public void showClientMenu(){
         this.option = -1;
+        System.out.println("");
         System.out.println(HEADER);
         System.out.println("1- Listar todos produtos");
         System.out.println("2- Adicionar produto ao carrinho");
@@ -74,8 +81,9 @@ public class Menus {
         this.controller.clientMenu(this.option);
     }
 
-    public void confirmPurchase(){
+    public void showConfirmPurchaseMenu(){
         this.option = -1;
+        System.out.println("");
         System.out.println(HEADER);
         System.out.println("Deseja finalizar a compra?");
         System.out.println("1- SIM");
@@ -83,7 +91,18 @@ public class Menus {
         System.out.println("0- Sair");
         System.out.println(FOOTER);
         requestUserInput();
+    }
 
+    public void showEditionMenu(Integer productID){
+        this.option = -1;
+        System.out.println("");
+        System.out.println(HEADER);
+        System.out.println("1- Mudar nome");
+        System.out.println("2- Mudar preco");
+        System.out.println("3- Mudar quantidade");
+        System.out.println(FOOTER);
+        requestUserInput();
+        this.controller.editMenu(option, productID);
     }
 
     public void requestUserInput(){

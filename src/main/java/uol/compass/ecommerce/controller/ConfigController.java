@@ -1,12 +1,18 @@
 package uol.compass.ecommerce.controller;
 
+import uol.compass.ecommerce.Main;
+
 import java.io.*;
 import java.util.Date;
 import java.util.Properties;
 
 public class ConfigController {
     private static final String CONFIG_NAME = "config.properties";
-    private File appConfig = new File("./" + CONFIG_NAME);
+    private File appConfig;
+
+    public ConfigController(){
+        this.appConfig = new File("./" + CONFIG_NAME);
+    }
 
     public boolean createConfig() throws IOException {
         boolean isFileCreated = appConfig.exists();
@@ -55,6 +61,8 @@ public class ConfigController {
 
                 try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
                     props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -80,6 +88,8 @@ public class ConfigController {
 
                 try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
                     props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -105,6 +115,8 @@ public class ConfigController {
 
                 try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
                     props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -129,6 +141,8 @@ public class ConfigController {
 
                 try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
                     props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -154,6 +168,8 @@ public class ConfigController {
 
                 try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
                     props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

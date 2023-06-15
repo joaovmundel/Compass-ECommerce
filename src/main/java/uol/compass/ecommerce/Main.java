@@ -7,26 +7,36 @@ import uol.compass.ecommerce.view.Menus;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
 public class Main {
+    private static ConfigController config = new ConfigController();
 
-    public static void main(String[] args) {
-        ConfigController config = new ConfigController();
+
+    public static void main(String[] args) throws InterruptedException {
+        Scanner scan = new Scanner(System.in);
+        Menus menus = new Menus(scan);
+        loadConfig();
         try {
             if(config.createConfig()){
-                Scanner scan = new Scanner(System.in);
-                new Menus(scan).showMainMenu();
+                menus.showMainMenu();
             }
         }catch (IOException e){
             System.out.println("Houve um erro ao criar o arquivo de configuracao.");
             e.printStackTrace();
+        }catch (InputMismatchException ex){
+            System.err.println("A opcao digitada e invalida.");
+            Thread.sleep(100);
+            main(args);
         }
 
     }
 
-
+    public static void loadConfig(){
+        config = new ConfigController();
+    }
 
     public static void testConnection(){
         DatabaseController db = new DatabaseController();
@@ -34,7 +44,7 @@ public class Main {
             db.getConnection();
             System.out.println("Conexao realizada com sucesso.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Houve um erro de conexao: " + e.getMessage());
         }
     }
 
