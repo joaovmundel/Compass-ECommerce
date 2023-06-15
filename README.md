@@ -12,10 +12,12 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 - Cálculo do valor total dos itens no carrinho
 - Confirmação de compra
 - Atualização do estoque pós venda
+- Configuração da conexão com banco de dados
 
 ## Requisitos
 
-- Acesso a banco de dados MySQL. As configurações do banco podem ser feitas dentro do programa.
+- Acesso a banco de dados MySQL.
+- Ter o Java instalado na máquina.
 
 ## Stack utilizada
 
