@@ -1,5 +1,8 @@
 package uol.compass.ecommerce.model;
 
+import uol.compass.ecommerce.Main;
+import uol.compass.ecommerce.model.config.Messages;
+
 public class Product implements Comparable<Product> {
     private Integer id;
     private String name;
@@ -12,7 +15,11 @@ public class Product implements Comparable<Product> {
             this.price = price;
             this.quantity = quantity;
         } else {
-            System.err.println("Erro, produto com campos invalidos, certifique-se de preencher todos os campos corretamente.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_FIELDS));
+            this.id = -1;
+            this.name = "-1";
+            this.price = -1.0;
+            this.quantity = -1;
         }
     }
 
@@ -23,7 +30,11 @@ public class Product implements Comparable<Product> {
             this.price = price;
             this.quantity = quantity;
         } else {
-            System.err.println("Erro, produto com campos invalidos, certifique-se de preencher todos os campos corretamente.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_FIELDS));
+            this.id = -1;
+            this.name = "-1";
+            this.price = -1.0;
+            this.quantity = -1;
         }
     }
 
@@ -52,7 +63,7 @@ public class Product implements Comparable<Product> {
         if (name != null && name.length() > 0) {
             this.name = name;
         } else {
-            System.out.println("Certifique-se de setar um nome valido no produto.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_NAME));
         }
     }
 
@@ -64,7 +75,7 @@ public class Product implements Comparable<Product> {
         if (price >= 0 && !(price.isNaN())) {
             this.price = price;
         } else {
-            System.out.println("Certifique-se de setar um preco positivo e valido no produto.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_PRICE));
         }
     }
 
@@ -76,7 +87,8 @@ public class Product implements Comparable<Product> {
         if (quantity != null && quantity >= 0) {
             this.quantity = quantity;
         } else {
-            System.out.println("Certifique-se de setar uma quantidade positiva e valida no produto.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_AMOUNT));
+
         }
     }
 

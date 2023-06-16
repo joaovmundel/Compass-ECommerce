@@ -1,6 +1,9 @@
 package uol.compass.ecommerce.controller;
 
 import uol.compass.ecommerce.Main;
+import uol.compass.ecommerce.model.config.Config_Properties;
+import uol.compass.ecommerce.model.config.Locales;
+import uol.compass.ecommerce.model.config.Messages;
 
 import java.io.*;
 import java.util.Date;
@@ -10,14 +13,18 @@ public class ConfigController {
     private static final String CONFIG_NAME = "config.properties";
     private File appConfig;
 
-    public ConfigController(){
+    public ConfigController() {
         this.appConfig = new File("./" + CONFIG_NAME);
     }
 
-    public boolean createConfig() throws IOException {
+    public boolean createConfig() {
         boolean isFileCreated = appConfig.exists();
         if (!appConfig.exists()) {
-            isFileCreated = appConfig.createNewFile();
+            try {
+                isFileCreated = appConfig.createNewFile();
+            } catch (IOException e) {
+                System.err.println(Main.getMessage(Messages.CONFIGURATION_CREATE_ERROR) + e.getMessage());
+            }
             try (Writer inputStream = new FileWriter(appConfig); FileInputStream propsInput = new FileInputStream(CONFIG_NAME)) {
 
                 Properties prop = new Properties();
@@ -30,7 +37,7 @@ public class ConfigController {
                 prop.setProperty("MYSQL_USER", "root");
                 prop.setProperty("MYSQL_PASSWORD", "fatec123*");
                 prop.setProperty("MYSQL_DATABASE", "ecommerce");
-
+                prop.setProperty("APP_LOCALE", "br");
                 // Storing the properties in the file with a heading comment.
                 prop.store(inputStream, "Config created at " + new Date());
 
@@ -42,14 +49,14 @@ public class ConfigController {
         return isFileCreated;
     }
 
-    public String getProperty(String key) {
+    public String getProperty(Config_Properties property) {
         Properties prop = new Properties();
         try (FileInputStream propsInput = new FileInputStream(CONFIG_NAME)) {
             prop.load(propsInput);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println(Main.getMessage(Messages.GET_PROPERTY_ERROR) + "\n" + ex.getMessage());
         }
-        return prop.getProperty(key);
+        return prop.getProperty(property.toString());
     }
 
     public void setHost(String host) {
@@ -64,18 +71,14 @@ public class ConfigController {
                     out.flush();
                     Main.loadConfig();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
 
         } else {
-            try {
-                createConfig();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            createConfig();
         }
     }
 
@@ -91,17 +94,13 @@ public class ConfigController {
                     out.flush();
                     Main.loadConfig();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
         } else {
-            try {
-                createConfig();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            createConfig();
         }
     }
 
@@ -118,17 +117,13 @@ public class ConfigController {
                     out.flush();
                     Main.loadConfig();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
         } else {
-            try {
-                createConfig();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            createConfig();
         }
     }
 
@@ -144,17 +139,35 @@ public class ConfigController {
                     out.flush();
                     Main.loadConfig();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
         } else {
-            try {
-                createConfig();
+            createConfig();
+        }
+    }
+
+    public void setLocale(Locales locale) {
+        if (appConfig.exists()) {
+            try (FileInputStream in = new FileInputStream(CONFIG_NAME)) {
+                Properties props = new Properties();
+                props.load(in);
+                props.setProperty("APP_LOCALE", locale.toString());
+
+                try (FileOutputStream out = new FileOutputStream(CONFIG_NAME)) {
+                    props.store(out, "Latest Update: " + new Date());
+                    out.flush();
+                    Main.loadConfig();
+                } catch (IOException e) {
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
+        } else {
+            createConfig();
         }
     }
 
@@ -171,17 +184,13 @@ public class ConfigController {
                     out.flush();
                     Main.loadConfig();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SET_PROPERTY_ERROR) + "\n" + e.getMessage());
             }
         } else {
-            try {
-                createConfig();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            createConfig();
         }
     }
 

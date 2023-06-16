@@ -1,6 +1,8 @@
 package uol.compass.ecommerce.view;
 
+import uol.compass.ecommerce.Main;
 import uol.compass.ecommerce.controller.MenuController;
+import uol.compass.ecommerce.model.config.Messages;
 
 import java.util.Scanner;
 
@@ -20,10 +22,10 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Entrar como GERENTE");
-        System.out.println("2- Entrar como CLIENTE");
-        System.out.println("3- Configuracoes");
-        System.out.println("0- Sair");
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_MAIN_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_MAIN_MENU_OPTION_2));
+        System.out.println("3- " + Main.getMessage(Messages.VIEWS_MAIN_MENU_OPTION_3));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
         this.controller.mainMenu(option);
@@ -33,14 +35,15 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Configurar HOST MySQL");
-        System.out.println("2- Configurar PORTA MySQL");
-        System.out.println("3- Configurar DATABASE MySQL");
-        System.out.println("4- Configurar USUARIO MySQL");
-        System.out.println("5- Configurar SENHA MySQL");
-        System.out.println("6- Testar conexao");
-        System.out.println("7- Voltar");
-        System.out.println("0- Sair");
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_2));
+        System.out.println("3- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_3));
+        System.out.println("4- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_4));
+        System.out.println("5- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_5));
+        System.out.println("6- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_6));
+        System.out.println("7- " + Main.getMessage(Messages.VIEWS_CONFIG_MENU_OPTION_7));
+        System.out.println("8- " + Main.getMessage(Messages.VIEWS_OPTION_BACK));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
         this.controller.configMenu(option);
@@ -50,15 +53,12 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Listar produtos");
-        System.out.println("2- Adicionar novo produto");
-        System.out.println("3- Deletar produto existente");
-        System.out.println("4- Editar produto existente");
-        System.out.println("5- Adicionar estoque de produto existente");
-        System.out.println("6- Remover estoque de produto existente");
-        System.out.println("7- Alterar preco de produto existente");
-        System.out.println("8- Voltar");
-        System.out.println("0- Sair");
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_MANAGER_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_MANAGER_MENU_OPTION_2));
+        System.out.println("3- " + Main.getMessage(Messages.VIEWS_MANAGER_MENU_OPTION_3));
+        System.out.println("4- " + Main.getMessage(Messages.VIEWS_MANAGER_MENU_OPTION_4));
+        System.out.println("5- " + Main.getMessage(Messages.VIEWS_OPTION_BACK));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
         this.controller.managerMenu(this.option);
@@ -68,14 +68,14 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Listar todos produtos");
-        System.out.println("2- Adicionar produto ao carrinho");
-        System.out.println("3- Remover produto do carrinho");
-        System.out.println("4- Alterar quantidade de produto");
-        System.out.println("5- Ver carrinho");
-        System.out.println("6- Esvaziar carrinho");
-        System.out.println("7- Finalizar compra");
-        System.out.println("0- Sair");
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_2));
+        System.out.println("3- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_3));
+        System.out.println("4- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_4));
+        System.out.println("5- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_5));
+        System.out.println("6- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_6));
+        System.out.println("7- " + Main.getMessage(Messages.VIEWS_CLIENT_MENU_OPTION_7));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
         this.controller.clientMenu(this.option);
@@ -85,10 +85,10 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("Deseja finalizar a compra?");
-        System.out.println("1- SIM");
-        System.out.println("2- Continuar comprando");
-        System.out.println("0- Sair");
+        System.out.println(Main.getMessage(Messages.VIEWS_CONFIRM_PURCHASE_REQUEST));
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_CONFIRM_PURCHASE_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_CONFIRM_PURCHASE_OPTION_2));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
     }
@@ -97,16 +97,29 @@ public class Menus {
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
-        System.out.println("1- Mudar nome");
-        System.out.println("2- Mudar preco");
-        System.out.println("3- Mudar quantidade");
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_EDITION_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_EDITION_MENU_OPTION_2));
+        System.out.println("3- " + Main.getMessage(Messages.VIEWS_EDITION_MENU_OPTION_3));
+        System.out.println("4- " + Main.getMessage(Messages.VIEWS_EDITION_MENU_OPTION_4));
+        System.out.println("5- " + Main.getMessage(Messages.VIEWS_EDITION_MENU_OPTION_5));
+        System.out.println("6- " + Main.getMessage(Messages.VIEWS_OPTION_BACK));
+        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         requestUserInput();
         this.controller.editMenu(option, productID);
     }
 
+    public void showLanguageMenu(){
+        this.option = -1;
+        System.out.println(Main.getMessage(Messages.VIEWS_LANGUAGE_MENU_TITLE));
+        System.out.println("1- " + Main.getMessage(Messages.VIEWS_LANGUAGE_MENU_OPTION_1));
+        System.out.println("2- " + Main.getMessage(Messages.VIEWS_LANGUAGE_MENU_OPTION_2));
+        requestUserInput();
+        this.controller.languageMenu(option);
+    }
+
     public void requestUserInput(){
-        System.out.print("Digite a opcao desejada: ");
+        System.out.print(Main.getMessage(Messages.REQUEST_USER_INPUT));
         this.option = this.scan.nextInt();
     }
 

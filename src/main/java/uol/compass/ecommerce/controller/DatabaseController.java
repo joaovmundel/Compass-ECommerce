@@ -1,17 +1,21 @@
 package uol.compass.ecommerce.controller;
 
 
+import uol.compass.ecommerce.Main;
+import uol.compass.ecommerce.model.config.Config_Properties;
+import uol.compass.ecommerce.model.config.Messages;
+
 import java.sql.*;
 
 
 public class DatabaseController {
 
-    private static ConfigController config = new ConfigController();
-    private String host = config.getProperty("MYSQL_HOST");
-    private String port = config.getProperty("MYSQL_PORT");
-    private String user = config.getProperty("MYSQL_USER");
-    private String password = config.getProperty("MYSQL_PASSWORD");
-    private String database = config.getProperty("MYSQL_DATABASE");
+    private ConfigController config = new ConfigController();
+    private String host = config.getProperty(Config_Properties.MYSQL_HOST);
+    private String port = config.getProperty(Config_Properties.MYSQL_PORT);
+    private String user = config.getProperty(Config_Properties.MYSQL_USER);
+    private String password = config.getProperty(Config_Properties.MYSQL_PASSWORD);
+    private String database = config.getProperty(Config_Properties.MYSQL_DATABASE);
 
     public Connection getConnection() throws SQLException {
         reloadConfig();
@@ -23,17 +27,17 @@ public class DatabaseController {
         try (Connection con = getConnection(); Statement statement = con.createStatement();) {
             statement.executeUpdate(sqlProducts);
         } catch (SQLException e) {
-            System.err.println("Erro ao criar tabelas: " + e.getMessage());
+            System.err.println(Main.getMessage(Messages.CREATE_TABLE_ERROR)+ "\n" + e.getMessage());
         }
     }
 
     public void reloadConfig(){
         config = new ConfigController();
-        host = config.getProperty("MYSQL_HOST");
-        port = config.getProperty("MYSQL_PORT");
-        user = config.getProperty("MYSQL_USER");
-        password = config.getProperty("MYSQL_PASSWORD");
-        database = config.getProperty("MYSQL_DATABASE");
+        host = config.getProperty(Config_Properties.MYSQL_HOST);
+        port = config.getProperty(Config_Properties.MYSQL_PORT);
+        user = config.getProperty(Config_Properties.MYSQL_USER);
+        password = config.getProperty(Config_Properties.MYSQL_PASSWORD);
+        database = config.getProperty(Config_Properties.MYSQL_DATABASE);
     }
 
 }

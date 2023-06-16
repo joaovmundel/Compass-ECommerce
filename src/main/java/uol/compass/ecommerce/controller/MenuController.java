@@ -2,6 +2,8 @@ package uol.compass.ecommerce.controller;
 
 import uol.compass.ecommerce.Main;
 import uol.compass.ecommerce.model.Product;
+import uol.compass.ecommerce.model.config.Locales;
+import uol.compass.ecommerce.model.config.Messages;
 import uol.compass.ecommerce.view.Menus;
 
 
@@ -10,9 +12,9 @@ import java.util.Scanner;
 import java.util.TreeSet;
 
 public class MenuController {
-    private static final String EXIT = "Voce escolheu sair...";
-    private static final String BACK = "Voltando...";
-    private static final String INVALID_OPTION = "Digite apenas opcoes validas.";
+    private static final String EXIT = Main.getMessage(Messages.EXIT);
+    private static final String BACK = Main.getMessage(Messages.BACK);
+    private static final String INVALID_OPTION = Main.getMessage(Messages.INVALID_OPTION);
     private Menus menus;
     private Scanner scan;
     private ProductController productController;
@@ -61,27 +63,27 @@ public class MenuController {
         ConfigController config = new ConfigController();
         switch (option) {
             case 1:
-                System.out.print("Digite o host: ");
+                System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_HOST));
                 config.setHost(scan.next());
                 menus.showConfigMenu();
                 break;
             case 2:
-                System.out.print("Digite a porta: ");
+                System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_PORT));
                 config.setPort(String.valueOf(scan.nextInt()));
                 menus.showConfigMenu();
                 break;
             case 3:
-                System.out.print("Digite a database: ");
+                System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_DATABASE));
                 config.setDatabase(scan.next());
                 menus.showConfigMenu();
                 break;
             case 4:
-                System.out.print("Digite o usuario: ");
+                System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_USER));
                 config.setUser(scan.next());
                 menus.showConfigMenu();
                 break;
             case 5:
-                System.out.print("Digite a senha: ");
+                System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_PASSWORD));
                 scan.nextLine();
                 config.setPassword(scan.nextLine());
                 menus.showConfigMenu();
@@ -91,6 +93,9 @@ public class MenuController {
                 menus.showConfigMenu();
                 break;
             case 7:
+                menus.showLanguageMenu();
+                break;
+            case 8:
                 System.out.println(BACK);
                 menus.showMainMenu();
                 break;
@@ -115,64 +120,31 @@ public class MenuController {
                     menus.showManagerMenu();
                     break;
                 case 2:
-                    System.out.print("Digite o nome do produto: ");
+                    System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_NAME));
                     scan.nextLine();
                     name = scan.nextLine();
-                    System.out.print("Digite o valor do produto (Ex: 12,99): ");
+                    System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_PRICE));
                     price = scan.nextDouble();
-                    System.out.print("Digite a quantidade do produto: ");
+                    System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_AMOUNT));
                     amount = scan.nextInt();
 
                     if (productController.postProduct(new Product(name, price, amount))) {
-                        System.out.println("Produto criado com sucesso.");
+                        System.out.println(Main.getMessage(Messages.MANAGER_MENU_PRODUCT_CREATED));
                     }
                     menus.showManagerMenu();
                     break;
                 case 3:
-                    System.out.print("Digite o id do produto a ser deletado: ");
+                    System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_DELETE_ID));
 
                     if (productController.deleteProduct(scan.nextInt())) {
-                        System.out.println("Produto deletado com sucesso.");
+                        System.out.println(Main.getMessage(Messages.MANAGER_MENU_PRODUCT_DELETED));
                     }
                     break;
                 case 4:
-                    System.out.print("Digite o id do produto para alterar o nome: ");
+                    System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_EDIT_ID));
                     menus.showEditionMenu(scan.nextInt());
                     break;
                 case 5:
-                    System.out.print("Digite o id do produto para adicionar estoque: ");
-                    prodID = scan.nextInt();
-
-                    System.out.print("Digite a quantidade a ser adicionado: ");
-                    amount = scan.nextInt();
-
-                    if (productController.addStock(prodID, amount)) {
-                        System.out.println("Foram adicionados +" + amount + " ao estoque.");
-                    }
-                    break;
-                case 6:
-                    System.out.print("Digite o id do produto para remover estoque: ");
-                    prodID = scan.nextInt();
-
-                    System.out.print("Digite a quantidade a ser removida: ");
-                    amount = scan.nextInt();
-
-                    if (productController.removeStock(prodID, amount)) {
-                        System.out.println("Foram removidos " + amount + " do estoque.");
-                    }
-                    break;
-                case 7:
-                    System.out.print("Digite o id do produto para alterar o preco: ");
-                    prodID = scan.nextInt();
-
-                    System.out.print("Digite o novo preco (Ex: 12,99): ");
-                    price = scan.nextDouble();
-
-                    if (productController.setPrice(prodID, price)) {
-                        System.out.println("O preco foi setado para R$ " + price);
-                    }
-                    break;
-                case 8:
                     System.out.println(BACK);
                     menus.showMainMenu();
                     break;
@@ -185,8 +157,7 @@ public class MenuController {
                     break;
             }
         } catch (InputMismatchException e) {
-            System.err.println("\nO tipo de dado inserido nao corresponde com o esperado.");
-            System.err.println("Aperte [ENTER] para continuar.");
+            System.err.println(Main.getMessage(Messages.INPUT_MISMATCH_ERROR));
             managerMenu(option);
         }
     }
@@ -199,23 +170,44 @@ public class MenuController {
         }
     }
 
-    public void editMenu(Integer option, Integer productdID) {
-        Product oldProduct = productController.getProduct(productdID);
+    public void editMenu(Integer option, Integer prodID) {
+        Product oldProduct = productController.getProduct(prodID);
+        int amount = 0;
         switch (option) {
             case 1:
-                System.out.print("Digite o novo nome: ");
+                System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_NAME));
                 oldProduct.setName(scan.next());
-                productController.updateProduct(productdID, oldProduct);
+                if (productController.updateProduct(prodID, oldProduct)) {
+                    System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_NAME_CHANGED));
+                }
                 break;
             case 2:
-                System.out.print("Digite o novo preco (Ex: 12,99): ");
+                System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_PRICE));
                 oldProduct.setPrice(scan.nextDouble());
-                productController.updateProduct(productdID, oldProduct);
+                if (productController.updateProduct(prodID, oldProduct)) {
+                    System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_PRICE_CHANGED));
+                }
                 break;
             case 3:
-                System.out.print("Digite a nova quantidade: ");
+                System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_STOCK));
                 oldProduct.setQuantity(scan.nextInt());
-                productController.updateProduct(productdID, oldProduct);
+                if (productController.updateProduct(prodID, oldProduct)) {
+                    System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_CHANGED));
+                }
+                break;
+            case 4:
+                System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_ADD_STOCK_AMOUNT));
+                amount = scan.nextInt();
+                if (productController.addStock(prodID, amount)) {
+                    System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_ADDED));
+                }
+                break;
+            case 5:
+                System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_REMOVE_STOCK_AMOUNT));
+                amount = scan.nextInt();
+                if (productController.removeStock(prodID, amount)) {
+                    System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_REMOVED));
+                }
                 break;
             case 0:
                 exit();
@@ -223,6 +215,21 @@ public class MenuController {
             default:
                 System.out.println(INVALID_OPTION);
                 break;
+        }
+    }
+
+    public void languageMenu(Integer option){
+        ConfigController config = new ConfigController();
+        if(option == 1){
+            Main.changeCurrentLocale(Locales.en);
+            config.setLocale(Locales.en);
+            System.out.println(Main.getMessage(Messages.LANGUAGE_MENU_LANGUAGE_SELECTED));
+            menus.showConfigMenu();
+        }else{
+            Main.changeCurrentLocale(Locales.br);
+            config.setLocale(Locales.br);
+            System.out.println(Main.getMessage(Messages.LANGUAGE_MENU_LANGUAGE_SELECTED));
+            menus.showConfigMenu();
         }
     }
 
@@ -249,7 +256,7 @@ public class MenuController {
         }
         String hyphen = placeText(largerName, "-");
         System.out.println("------------" + hyphen + "-----------------------------------");
-        System.out.println("|   ID   | Nome" + placeText(largerName - 4, " ") + "|      Preco      |   Quantidade   |");
+        System.out.println("|   ID   | " + Main.getMessage(Messages.SHOW_PRODUCTS_NAME) + placeText(largerName - 4, " ") + "|      " + Main.getMessage(Messages.SHOW_PRODUCTS_PRICE) + "      |   " + Main.getMessage(Messages.SHOW_PRODUCTS_QUANTITY) + "   |");
         for (Product prod : products) {
             System.out.println("|   " + prod.getId() + "   | " + prod.getName() + placeText(largerName - prod.getName().length(), " ") + "| " + prod.getPrice() + placeText(16 - (String.valueOf(prod.getPrice()).length()), " ") + "| " + prod.getQuantity() + placeText(15 - (String.valueOf(prod.getQuantity()).length()), " ") + "|");
         }

@@ -1,16 +1,15 @@
 package uol.compass.ecommerce.controller;
 
-import com.sun.source.tree.Tree;
+import uol.compass.ecommerce.Main;
 import uol.compass.ecommerce.model.Product;
+import uol.compass.ecommerce.model.config.Messages;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeSet;
 
 public class ProductController {
     private DatabaseController db;
-    private static final String NONEXISTENT_PRODUCT = "Esse produto nao esta cadastrado.";
+    private static final String NONEXISTENT_PRODUCT = Main.getMessage(Messages.NONEXISTENT_PRODUCT_ERROR);
 
     public ProductController(DatabaseController databaseController) {
         this.db = databaseController;
@@ -28,7 +27,7 @@ public class ProductController {
                 stmt.executeUpdate(sqlSeeder);
             }
         } catch (SQLException e) {
-            System.err.println("Houve um erro ao povoar o banco de dados: " + e.getMessage());
+            System.err.println(Main.getMessage(Messages.CREATE_DEFAULT_PRODUCTS_ERROR) + "\n" + e.getMessage());
         }
     }
 
@@ -38,8 +37,7 @@ public class ProductController {
             pstmt.setInt(1, productID);
             return pstmt.executeQuery().next();
         } catch (SQLException e) {
-            System.out.println("Cheque as configuracoes de banco de dados.");
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return false;
     }
@@ -51,8 +49,7 @@ public class ProductController {
             pstmt.setInt(1, productID);
             return pstmt.executeQuery().getInt("quantity");
         } catch (SQLException e) {
-            System.out.println("Cheque as configuracoes de banco de dados.");
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return 0;
     }
@@ -63,9 +60,9 @@ public class ProductController {
             try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setInt(1, amount);
                 pstmt.setInt(2, productID);
-                return pstmt.executeUpdate() == 1 ? true : false;
+                return pstmt.executeUpdate() > 0 ? true : false;
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
         } else {
             System.out.println(NONEXISTENT_PRODUCT);
@@ -87,9 +84,9 @@ public class ProductController {
             try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setDouble(1, newPrice);
                 pstmt.setInt(2, productID);
-                return pstmt.executeUpdate() == 1 ? true : false;
+                return pstmt.executeUpdate() > 0 ? true : false;
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
         } else {
             System.out.println(NONEXISTENT_PRODUCT);
@@ -104,13 +101,12 @@ public class ProductController {
                 pstmt.setString(1, product.getName());
                 pstmt.setDouble(2, product.getPrice());
                 pstmt.setInt(3, product.getQuantity());
-                return (pstmt.executeUpdate() == 1 ? true : false);
+                return (pstmt.executeUpdate() > 0 ? true : false);
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
         } else {
-            System.err.println("Nao foi possivel criar o produto.");
-            System.err.println("Verifique as informacoes do produto e tente novamente.");
+            System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_FIELDS));
             return false;
         }
         return false;
@@ -124,12 +120,12 @@ public class ProductController {
             rs = pstmt.executeQuery();
             return new Product(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getInt("quantity"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         } finally {
             try {
                 if (!rs.isClosed()) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
         }
         return new Product(-1, "", -1.0, -1);
@@ -151,30 +147,31 @@ public class ProductController {
                 products.add(prod);
             }
         } catch (SQLException e) {
-            System.err.println("Houve um erro ao retornar todos os produtos: " + e.getMessage());
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return products;
     }
 
-    public void updateProduct(Integer productID, Product newProduct) {
+    public boolean updateProduct(Integer productID, Product newProduct) {
         String sql = "update products set name = ?, price = ?, quantity = ? where id = ?;";
         try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, newProduct.getName());
             pstmt.setDouble(2, newProduct.getPrice());
             pstmt.setInt(3, newProduct.getQuantity());
-            pstmt.executeUpdate();
+            return pstmt.executeUpdate() > 0 ? true : false;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
+        return false;
     }
 
     public boolean deleteProduct(Integer productID) {
         String sql = "delete from products where id = ?;";
         try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, productID);
-            return pstmt.executeUpdate() == 1 ? true : false;
+            return pstmt.executeUpdate() > 0 ? true : false;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return false;
     }
@@ -185,7 +182,7 @@ public class ProductController {
             pstmt.setInt(1, productID);
             return pstmt.executeQuery().next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return false;
     }
@@ -194,11 +191,11 @@ public class ProductController {
         try (Connection con = db.getConnection(); Statement stmt = con.createStatement()) {
             String sqlCount = "select count(*) from products;";
             ResultSet rs = stmt.executeQuery(sqlCount);
-            if(rs.next()) {
+            if (rs.next()) {
                 return rs.getInt(1) == 0;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
         return false;
     }

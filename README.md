@@ -13,11 +13,26 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 - Confirmação de compra
 - Atualização do estoque pós venda
 - Configuração da conexão com banco de dados
+- Alterar o idioma do sistema na página de configurações
+
+## Configuração Padrão do Banco de Dados
+
+```YML
+APP_LOCALE=en
+MYSQL_DATABASE=ecommerce
+MYSQL_HOST=127.0.0.1
+MYSQL_PASSWORD=
+MYSQL_PORT=3306
+MYSQL_USER=root
+
+```
+
 
 ## Requisitos
 
-- Acesso a banco de dados MySQL.
-- Ter o Java instalado na máquina.
+- Acesso a banco de dados MySQL 8.0.
+- Ter o Java 17 instalado na máquina.
+
 
 ## Stack utilizada
 
