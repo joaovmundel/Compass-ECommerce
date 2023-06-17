@@ -1,6 +1,7 @@
 package uol.compass.ecommerce.controller;
 
 import uol.compass.ecommerce.Main;
+import uol.compass.ecommerce.model.Cart;
 import uol.compass.ecommerce.model.Product;
 import uol.compass.ecommerce.model.config.Locales;
 import uol.compass.ecommerce.model.config.Messages;
@@ -120,8 +121,7 @@ public class MenuController {
                     break;
                 case 2:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_NAME));
-                    scan.nextLine();
-                    name = InputController.requestUserString(this.scan);
+                    name = InputController.requestUserLongString(this.scan);
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_PRICE));
                     price = InputController.requestUserDouble(this.scan);
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_AMOUNT));
@@ -135,14 +135,22 @@ public class MenuController {
                 case 3:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_DELETE_ID));
 
-                    if (productController.deleteProduct( InputController.requestUserInt(this.scan))) {
+                    if (productController.deleteProduct(InputController.requestUserInt(this.scan))) {
                         System.out.println(Main.getMessage(Messages.MANAGER_MENU_PRODUCT_DELETED));
-                        menus.showManagerMenu();
+                    } else {
+                        System.err.println(Main.getMessage(Messages.NONEXISTENT_PRODUCT_ERROR));
                     }
+                    menus.showManagerMenu();
                     break;
                 case 4:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_EDIT_ID));
-                    menus.showEditionMenu( InputController.requestUserInt(this.scan));
+                    int prodID = InputController.requestUserInt(this.scan);
+                    if (productController.productExists(prodID)) {
+                        menus.showEditionMenu(prodID);
+                    } else {
+                        System.err.println(Main.getMessage(Messages.NONEXISTENT_PRODUCT_ERROR));
+                        menus.showManagerMenu();
+                    }
                     break;
                 case 5:
                     System.out.println(BACK);
@@ -164,6 +172,26 @@ public class MenuController {
 
     public void clientMenu(Integer option) {
         switch (option) {
+            case 1:
+                showProducts();
+                menus.showClientMenu();
+                break;
+            case 2:
+                System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_PRODUCT_ID_TO_ADD));
+                Cart cart = new Cart();
+                CartController cartController = new CartController();
+                int id = InputController.requestUserInt(scan);
+                System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_AMOUNT));
+                int amount = InputController.requestUserInt(scan);
+                cartController.addProduct(id, amount, cart);
+                menus.showClientMenu();
+                break;
+            case 8:
+                menus.showMainMenu();
+                break;
+            case 0:
+                exit();
+                break;
             default:
                 System.out.println(INVALID_OPTION);
                 break;
@@ -176,23 +204,26 @@ public class MenuController {
         switch (option) {
             case 1:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_NAME));
-                oldProduct.setName( InputController.requestUserString(this.scan));
+                oldProduct.setName(InputController.requestUserLongString(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_NAME_CHANGED));
+                    menus.showEditionMenu(prodID);
                 }
                 break;
             case 2:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_PRICE));
-                oldProduct.setPrice( InputController.requestUserDouble(this.scan));
+                oldProduct.setPrice(InputController.requestUserDouble(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_PRICE_CHANGED));
+                    menus.showEditionMenu(prodID);
                 }
                 break;
             case 3:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_STOCK));
-                oldProduct.setQuantity( InputController.requestUserInt(this.scan));
+                oldProduct.setQuantity(InputController.requestUserInt(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_CHANGED));
+                    menus.showEditionMenu(prodID);
                 }
                 break;
             case 4:
@@ -200,6 +231,7 @@ public class MenuController {
                 amount = InputController.requestUserInt(this.scan);
                 if (productController.addStock(prodID, amount)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_ADDED));
+                    menus.showEditionMenu(prodID);
                 }
                 break;
             case 5:
@@ -207,7 +239,14 @@ public class MenuController {
                 amount = InputController.requestUserInt(this.scan);
                 if (productController.removeStock(prodID, amount)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_REMOVED));
+                } else {
+                    System.err.println(Main.getMessage(Messages.INVALID_PRODUCT_FIELDS));
                 }
+                menus.showEditionMenu(prodID);
+                break;
+            case 6:
+                System.out.println(Main.getMessage(Messages.BACK));
+                menus.showManagerMenu();
                 break;
             case 0:
                 exit();

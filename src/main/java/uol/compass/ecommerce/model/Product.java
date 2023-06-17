@@ -92,6 +92,17 @@ public class Product implements Comparable<Product> {
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
+    }
+
     @Override
     public int compareTo(Product other) {
         if (other == null) {

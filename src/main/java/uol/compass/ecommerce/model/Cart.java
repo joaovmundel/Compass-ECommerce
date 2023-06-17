@@ -1,7 +1,9 @@
 package uol.compass.ecommerce.model;
 
+import uol.compass.ecommerce.Main;
 import uol.compass.ecommerce.controller.DatabaseController;
 import uol.compass.ecommerce.controller.ProductController;
+import uol.compass.ecommerce.model.config.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,37 +19,20 @@ public class Cart {
         this.db = db;
     }
 
-    public boolean hasProduct(Integer productID){
-        return this.products.containsKey(productID) && this.products.get(productID) > 0;
-    }
-    public void addProduct(Integer productID, Integer quantity) {
-        ProductController productController = new ProductController(this.db);
-        if (productController.hasStock(productID) && productController.getStock(productID) >= quantity) {
-            if (hasProduct(productID)) {
-                this.products.put(productID, products.get(productID) + quantity);
-            } else {
-                this.products.put(productID, quantity);
-            }
-            System.out.println("Produto adicionado ao carrinho com sucesso.");
-            System.out.println("Atualmente voce tem " + this.products.get(productID) + " desse produto no carrinho.");
-        } else {
-            System.out.println("Nao temos estoque o suficiente para essa quantidade do produto.");
-            System.out.println("Temos apenas " + productController.getStock(productID) + " no estoque.");
-        }
+    public Cart(DatabaseController db){
+        this.products = new HashMap<>();
+        this.total = 0.0;
+        this.db = db;
     }
 
-    public void removeProduct(Integer productID, Integer quantity) {
-        if (hasProduct(productID)) {
-            if (this.products.get(productID) >= quantity) {
-                this.products.put(productID, this.products.get(productID) - quantity);
-                System.out.println("Foram removidos " + quantity + " do carrinho.");
-                System.out.println("Restam " + this.products.get(productID) + " agora");
-            } else {
-                System.out.println("Voce nao pode remover mais produtos do que voce tem no carrinho.");
-            }
-        } else {
-            System.out.println("Esse produto nao esta no carrinho.");
-        }
+    public Cart(){
+        this.db = new DatabaseController();
+        this.total = 0.0;
+        this.products = new HashMap<>();
+    }
+
+    public boolean hasProduct(Integer productID){
+        return this.products.containsKey(productID) && this.products.get(productID) > 0;
     }
 
     public HashMap<Integer, Integer> getProducts() {

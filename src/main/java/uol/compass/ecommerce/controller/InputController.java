@@ -14,7 +14,6 @@ public class InputController {
     public static Integer requestUserInt(Scanner scan) {
         int input = -1;
             try{
-                System.out.print(requestMessage);
                 input = scan.nextInt();
             }catch (InputMismatchException e){
                 inputError(scan);
@@ -25,7 +24,6 @@ public class InputController {
     public static Double requestUserDouble(Scanner scan) {
         double input = -1.0;
         try{
-            System.out.print(requestMessage);
             input = scan.nextDouble();
         }catch (InputMismatchException e){
             inputError(scan);
@@ -36,7 +34,6 @@ public class InputController {
     public static String requestUserString(Scanner scan) {
         String input = "";
         try{
-            System.out.print(requestMessage);
             input = scan.next();
         }catch (InputMismatchException e){
             inputError(scan);
@@ -47,7 +44,7 @@ public class InputController {
     public static String requestUserLongString(Scanner scan) {
         String input = "";
         try{
-            System.out.print(requestMessage);
+            scan.nextLine();
             input = scan.nextLine();
         }catch (InputMismatchException e){
             inputError(scan);
@@ -58,7 +55,6 @@ public class InputController {
     public static Float requestUserFloat(Scanner scan) {
         float input = -1f;
         try{
-            System.out.print(requestMessage);
             input = scan.nextFloat();
         }catch (InputMismatchException e){
             inputError(scan);

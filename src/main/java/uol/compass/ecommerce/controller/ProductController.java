@@ -44,15 +44,45 @@ public class ProductController {
 
 
     public Integer getStock(Integer productID) {
+        ResultSet rs = null;
+        int quantity = 0;
         String sql = "select quantity from products where id = ?";
         try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, productID);
-            return pstmt.executeQuery().getInt("quantity");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                quantity = rs.getInt("quantity");
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            }
+        } catch (SQLException e) {
+
+            System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
+        }
+        return quantity;
+    }
+
+    public String getProductName(Integer productID) {
+        String sql = "select name from products where id = ?";
+        ResultSet rs = null;
+        String name = "";
+        try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, productID);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            }
         } catch (SQLException e) {
             System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
-        return 0;
+
+        return name;
     }
+
 
     public boolean setStock(Integer productID, Integer amount) {
         if (productExists(productID)) {
@@ -71,11 +101,20 @@ public class ProductController {
     }
 
     public boolean addStock(Integer productID, Integer amount) {
-        return setStock(productID, getStock(productID) + amount);
+        int quantityToAdd = getStock(productID) + amount;
+        if (quantityToAdd >= 0) {
+            return setStock(productID, quantityToAdd);
+        }
+        return false;
     }
 
     public boolean removeStock(Integer productID, Integer amount) {
-        return setStock(productID, getStock(productID) - amount);
+        int currentQuantity = getStock(productID);
+        int quantityAfterRemove = currentQuantity - amount;
+        if (quantityAfterRemove >= 0) {
+            return setStock(productID, quantityAfterRemove);
+        }
+        return false;
     }
 
     public boolean setPrice(Integer productID, Double newPrice) {
@@ -118,7 +157,9 @@ public class ProductController {
         try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, productID);
             rs = pstmt.executeQuery();
-            return new Product(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getInt("quantity"));
+            if (rs.next()) {
+                return new Product(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getInt("quantity"));
+            }
         } catch (SQLException e) {
             System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         } finally {
@@ -158,6 +199,7 @@ public class ProductController {
             pstmt.setString(1, newProduct.getName());
             pstmt.setDouble(2, newProduct.getPrice());
             pstmt.setInt(3, newProduct.getQuantity());
+            pstmt.setInt(4, productID);
             return pstmt.executeUpdate() > 0 ? true : false;
         } catch (SQLException e) {
             System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
