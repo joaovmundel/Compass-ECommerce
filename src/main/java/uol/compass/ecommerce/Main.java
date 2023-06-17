@@ -18,20 +18,24 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         loadConfig();
-        Scanner scan = new Scanner(System.in);
-        Menus menus = new Menus(scan);
+        boolean running = true;
         try {
-            if (config.createConfig()) {
-                menus.showMainMenu();
-            } else {
-                System.err.println(getMessage(Messages.CONFIGURATION_CREATE_ERROR));
-            }
+            startProgram();
         } catch (InputMismatchException ex) {
             System.err.println(getMessage(Messages.INPUT_MISMATCH_ERROR));
             Thread.sleep(100);
-            main(args);
         }
 
+    }
+
+    public static void startProgram() {
+        Scanner scan = new Scanner(System.in);
+        Menus menus = new Menus(scan);
+        if (config.createConfig()) {
+            menus.showMainMenu();
+        } else {
+            System.err.println(getMessage(Messages.CONFIGURATION_CREATE_ERROR));
+        }
     }
 
     public static void loadConfig() {
@@ -55,7 +59,7 @@ public class Main {
     }
 
 
-    public static void changeCurrentLocale(Locales locale){
+    public static void changeCurrentLocale(Locales locale) {
         Main.locale = new Locale(locale.toString());
     }
 

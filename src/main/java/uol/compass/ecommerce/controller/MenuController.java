@@ -49,6 +49,7 @@ public class MenuController {
                 break;
             default:
                 System.out.println(INVALID_OPTION);
+                menus.showMainMenu();
                 break;
         }
     }
@@ -64,28 +65,27 @@ public class MenuController {
         switch (option) {
             case 1:
                 System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_HOST));
-                config.setHost(scan.next());
+                config.setHost(InputController.requestUserString(this.scan));
                 menus.showConfigMenu();
                 break;
             case 2:
                 System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_PORT));
-                config.setPort(String.valueOf(scan.nextInt()));
+                config.setPort(String.valueOf(InputController.requestUserInt(this.scan)));
                 menus.showConfigMenu();
                 break;
             case 3:
                 System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_DATABASE));
-                config.setDatabase(scan.next());
+                config.setDatabase(InputController.requestUserString(this.scan));
                 menus.showConfigMenu();
                 break;
             case 4:
                 System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_USER));
-                config.setUser(scan.next());
+                config.setUser(InputController.requestUserString(this.scan));
                 menus.showConfigMenu();
                 break;
             case 5:
                 System.out.print(Main.getMessage(Messages.CONFIG_MENU_REQUEST_PASSWORD));
-                scan.nextLine();
-                config.setPassword(scan.nextLine());
+                config.setPassword(InputController.requestUserString(this.scan));
                 menus.showConfigMenu();
                 break;
             case 6:
@@ -109,7 +109,6 @@ public class MenuController {
     }
 
     public void managerMenu(Integer option) {
-        int prodID;
         String name;
         double price;
         int amount;
@@ -122,11 +121,11 @@ public class MenuController {
                 case 2:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_NAME));
                     scan.nextLine();
-                    name = scan.nextLine();
+                    name = InputController.requestUserString(this.scan);
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_PRICE));
-                    price = scan.nextDouble();
+                    price = InputController.requestUserDouble(this.scan);
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_CREATE_AMOUNT));
-                    amount = scan.nextInt();
+                    amount = InputController.requestUserInt(this.scan);
 
                     if (productController.postProduct(new Product(name, price, amount))) {
                         System.out.println(Main.getMessage(Messages.MANAGER_MENU_PRODUCT_CREATED));
@@ -136,13 +135,14 @@ public class MenuController {
                 case 3:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_DELETE_ID));
 
-                    if (productController.deleteProduct(scan.nextInt())) {
+                    if (productController.deleteProduct( InputController.requestUserInt(this.scan))) {
                         System.out.println(Main.getMessage(Messages.MANAGER_MENU_PRODUCT_DELETED));
+                        menus.showManagerMenu();
                     }
                     break;
                 case 4:
                     System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_EDIT_ID));
-                    menus.showEditionMenu(scan.nextInt());
+                    menus.showEditionMenu( InputController.requestUserInt(this.scan));
                     break;
                 case 5:
                     System.out.println(BACK);
@@ -153,12 +153,12 @@ public class MenuController {
                     break;
                 default:
                     System.err.println(INVALID_OPTION);
-                    managerMenu(option);
+                    menus.showManagerMenu();
                     break;
             }
         } catch (InputMismatchException e) {
-            System.err.println(Main.getMessage(Messages.INPUT_MISMATCH_ERROR));
-            managerMenu(option);
+            System.err.println("\n" + Main.getMessage(Messages.INPUT_MISMATCH_ERROR));
+            menus.showManagerMenu();
         }
     }
 
@@ -176,35 +176,35 @@ public class MenuController {
         switch (option) {
             case 1:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_NAME));
-                oldProduct.setName(scan.next());
+                oldProduct.setName( InputController.requestUserString(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_NAME_CHANGED));
                 }
                 break;
             case 2:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_PRICE));
-                oldProduct.setPrice(scan.nextDouble());
+                oldProduct.setPrice( InputController.requestUserDouble(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_PRICE_CHANGED));
                 }
                 break;
             case 3:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_NEW_STOCK));
-                oldProduct.setQuantity(scan.nextInt());
+                oldProduct.setQuantity( InputController.requestUserInt(this.scan));
                 if (productController.updateProduct(prodID, oldProduct)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_CHANGED));
                 }
                 break;
             case 4:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_ADD_STOCK_AMOUNT));
-                amount = scan.nextInt();
+                amount = InputController.requestUserInt(this.scan);
                 if (productController.addStock(prodID, amount)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_ADDED));
                 }
                 break;
             case 5:
                 System.out.print(Main.getMessage(Messages.EDITION_MENU_REQUEST_PRODUCT_REMOVE_STOCK_AMOUNT));
-                amount = scan.nextInt();
+                amount = InputController.requestUserInt(this.scan);
                 if (productController.removeStock(prodID, amount)) {
                     System.out.println(Main.getMessage(Messages.EDITION_MENU_PRODUCT_STOCK_REMOVED));
                 }
@@ -218,19 +218,17 @@ public class MenuController {
         }
     }
 
-    public void languageMenu(Integer option){
+    public void languageMenu(Integer option) {
         ConfigController config = new ConfigController();
-        if(option == 1){
+        if (option == 1) {
             Main.changeCurrentLocale(Locales.en);
             config.setLocale(Locales.en);
-            System.out.println(Main.getMessage(Messages.LANGUAGE_MENU_LANGUAGE_SELECTED));
-            menus.showConfigMenu();
-        }else{
+        } else {
             Main.changeCurrentLocale(Locales.br);
             config.setLocale(Locales.br);
-            System.out.println(Main.getMessage(Messages.LANGUAGE_MENU_LANGUAGE_SELECTED));
-            menus.showConfigMenu();
         }
+        System.out.println(Main.getMessage(Messages.LANGUAGE_MENU_LANGUAGE_SELECTED));
+        menus.showConfigMenu();
     }
 
     public void confirmPurchaseMenu(Integer option) {
@@ -267,4 +265,5 @@ public class MenuController {
 
         return new String(new char[size]).replace("\0", textToPlace);
     }
+
 }

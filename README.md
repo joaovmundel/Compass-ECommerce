@@ -12,8 +12,8 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 - Cálculo do valor total dos itens no carrinho
 - Confirmação de compra
 - Atualização do estoque pós venda
-- Configuração da conexão com banco de dados
-- Alterar o idioma do sistema na página de configurações
+- Configuração da conexão com banco de dados em tempo de execução
+- Alterar o idioma do sistema na página de configurações em tempo de execução
 
 ## Configuração Padrão do Banco de Dados
 
