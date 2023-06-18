@@ -19,6 +19,7 @@ public class MenuController {
     private Menus menus;
     private Scanner scan;
     private ProductController productController;
+    private Cart cart = new Cart();
 
     public MenuController(Menus menus, Scanner scan) {
         this.menus = menus;
@@ -171,6 +172,9 @@ public class MenuController {
     }
 
     public void clientMenu(Integer option) {
+        CartController cartController = new CartController();
+        int id = -1;
+        int amount = -1;
         switch (option) {
             case 1:
                 showProducts();
@@ -178,13 +182,61 @@ public class MenuController {
                 break;
             case 2:
                 System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_PRODUCT_ID_TO_ADD));
-                Cart cart = new Cart();
-                CartController cartController = new CartController();
-                int id = InputController.requestUserInt(scan);
+                id = InputController.requestUserInt(scan);
                 System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_AMOUNT));
-                int amount = InputController.requestUserInt(scan);
+                amount = InputController.requestUserInt(scan);
                 cartController.addProduct(id, amount, cart);
                 menus.showClientMenu();
+                break;
+            case 3:
+                System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_PRODUCT_ID_TO_REMOVE));
+                id = InputController.requestUserInt(scan);
+                System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_AMOUNT));
+                amount = InputController.requestUserInt(scan);
+                cartController.removeProduct(id, amount, cart);
+                menus.showClientMenu();
+                break;
+            case 4:
+                System.out.print(Main.getMessage(Messages.MANAGER_MENU_REQUEST_PRODUCT_EDIT_ID));
+                id = InputController.requestUserInt(scan);
+                System.out.print(Main.getMessage(Messages.MENU_CLIENT_REQUEST_AMOUNT));
+                amount = InputController.requestUserInt(scan);
+                cartController.setProductAmount(id, amount, cart);
+                menus.showClientMenu();
+                break;
+            case 5:
+                cartController.showProducts(cart);
+                menus.showClientMenu();
+                break;
+            case 6:
+                System.out.println(Main.getMessage(Messages.MENU_CLIENT_CLEAR_CART_TITLE));
+                System.out.println("1- " + Main.getMessage(Messages.MENU_CLIENT_CLEAR_CART_OPTION_1));
+                System.out.println("2- " + Main.getMessage(Messages.MENU_CLIENT_CLEAR_CART_OPTION_2));
+                System.out.print(Main.getMessage(Messages.REQUEST_USER_INPUT));
+                int clear = InputController.requestUserInt(scan);
+                switch (clear) {
+                    case 1:
+                        cart.getProducts().clear();
+                        System.out.println(Main.getMessage(Messages.MENU_CLIENT_CLEAR_CART_SUCCESS));
+                        break;
+                    case 2:
+                        menus.showClientMenu();
+                        break;
+                    default:
+                        System.out.println(Main.getMessage(Messages.INVALID_OPTION));
+                        menus.showClientMenu();
+                        break;
+                }
+                menus.showClientMenu();
+                break;
+            case 7:
+                double total = 0;
+                for(Integer cartProdID : cart.getProducts().keySet()){
+                    Product prod = productController.getProduct(cartProdID);
+                    total+=prod.getPrice() * cart.getProducts().get(cartProdID);
+                }
+                cart.setTotal(total);
+                menus.showCheckoutConfirmationMenu();
                 break;
             case 8:
                 menus.showMainMenu();
@@ -271,7 +323,16 @@ public class MenuController {
     }
 
     public void confirmPurchaseMenu(Integer option) {
+        CartController cartController = new CartController();
         switch (option) {
+            case 1:
+                cartController.checkout(cart);
+                System.out.println(Main.getMessage(Messages.TOTAL_PAID) + cart.getTotal());
+                menus.showClientMenu();
+                break;
+            case 2:
+                menus.showClientMenu();
+                break;
             default:
                 System.out.println(INVALID_OPTION);
                 break;

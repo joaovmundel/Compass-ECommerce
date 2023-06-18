@@ -3,6 +3,7 @@ package uol.compass.ecommerce.view;
 import uol.compass.ecommerce.Main;
 import uol.compass.ecommerce.controller.InputController;
 import uol.compass.ecommerce.controller.MenuController;
+import uol.compass.ecommerce.model.Cart;
 import uol.compass.ecommerce.model.config.Messages;
 
 import java.util.Scanner;
@@ -87,17 +88,17 @@ public class Menus {
         this.controller.clientMenu(this.option);
     }
 
-    public void showConfirmPurchaseMenu(){
+    public void showCheckoutConfirmationMenu(){
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
         System.out.println(Main.getMessage(Messages.MENU_CLIENT_CHECKOUT_CONFIRM_TITLE));
         System.out.println("1- " + Main.getMessage(Messages.MENU_CLIENT_CHECKOUT_CONFIRM_OPTION_1));
         System.out.println("2- " + Main.getMessage(Messages.MENU_CLIENT_CHECKOUT_CONFIRM_OPTION_2));
-        System.out.println("0- " + Main.getMessage(Messages.VIEWS_OPTION_EXIT));
         System.out.println(FOOTER);
         System.out.print(Main.getMessage(Messages.REQUEST_USER_INPUT));
         this.option = InputController.requestUserInt(this.scan);
+        this.controller.confirmPurchaseMenu(option);
     }
 
     public void showEditionMenu(Integer productID){
