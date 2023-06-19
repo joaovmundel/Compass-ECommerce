@@ -90,7 +90,7 @@ public class ProductController {
             try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setInt(1, amount);
                 pstmt.setInt(2, productID);
-                return pstmt.executeUpdate() > 0 ? true : false;
+                return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {
                 System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
@@ -123,7 +123,7 @@ public class ProductController {
             try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setDouble(1, newPrice);
                 pstmt.setInt(2, productID);
-                return pstmt.executeUpdate() > 0 ? true : false;
+                return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {
                 System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
@@ -140,7 +140,7 @@ public class ProductController {
                 pstmt.setString(1, product.getName());
                 pstmt.setDouble(2, product.getPrice());
                 pstmt.setInt(3, product.getQuantity());
-                return (pstmt.executeUpdate() > 0 ? true : false);
+                return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {
                 System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
             }
@@ -200,7 +200,7 @@ public class ProductController {
             pstmt.setDouble(2, newProduct.getPrice());
             pstmt.setInt(3, newProduct.getQuantity());
             pstmt.setInt(4, productID);
-            return pstmt.executeUpdate() > 0 ? true : false;
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }
@@ -211,7 +211,7 @@ public class ProductController {
         String sql = "delete from products where id = ?;";
         try (Connection con = db.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, productID);
-            return pstmt.executeUpdate() > 0 ? true : false;
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println(Main.getMessage(Messages.SQL_ERROR) + "\n" + e.getMessage());
         }

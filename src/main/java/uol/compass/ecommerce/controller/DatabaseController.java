@@ -22,6 +22,16 @@ public class DatabaseController {
         return DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
     }
 
+    public void createDatabase(){
+        String sql = "CREATE DATABASE IF NOT EXISTS ecommerce;";
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port, user, password);Statement stmt = con.createStatement()){
+            stmt.executeUpdate(sql);
+        }catch (SQLException e){
+            System.err.println(Main.getMessage(Messages.DATABASE_CREATE_ERROR) + "\n" + e.getMessage());
+        }
+
+
+    }
     public void setupTables() {
         String sqlProducts = "CREATE TABLE IF NOT EXISTS products(id int not null primary key auto_increment, name varchar(50) not null, price double not null default 0, quantity int not null default 0);";
         try (Connection con = getConnection(); Statement statement = con.createStatement();) {

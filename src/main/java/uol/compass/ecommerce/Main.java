@@ -18,7 +18,6 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         loadConfig();
-        boolean running = true;
         try {
             startProgram();
         } catch (InputMismatchException ex) {

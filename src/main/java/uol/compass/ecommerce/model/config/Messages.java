@@ -2,6 +2,7 @@ package uol.compass.ecommerce.model.config;
 
 public enum Messages {
     CONFIGURATION_CREATE_ERROR,
+    DATABASE_CREATE_ERROR,
     SET_PROPERTY_ERROR,
     GET_PROPERTY_ERROR,
     CREATE_TABLE_ERROR,

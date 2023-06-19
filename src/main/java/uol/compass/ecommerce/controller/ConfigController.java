@@ -35,9 +35,9 @@ public class ConfigController {
                 prop.setProperty("MYSQL_HOST", "127.0.0.1");
                 prop.setProperty("MYSQL_PORT", "3306");
                 prop.setProperty("MYSQL_USER", "root");
-                prop.setProperty("MYSQL_PASSWORD", "fatec123*");
+                prop.setProperty("MYSQL_PASSWORD", "");
                 prop.setProperty("MYSQL_DATABASE", "ecommerce");
-                prop.setProperty("APP_LOCALE", "br");
+                prop.setProperty("APP_LOCALE", "en");
                 // Storing the properties in the file with a heading comment.
                 prop.store(inputStream, "Config created at " + new Date());
 

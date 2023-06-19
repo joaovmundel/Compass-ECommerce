@@ -1,6 +1,7 @@
 package uol.compass.ecommerce.view;
 
 import uol.compass.ecommerce.Main;
+import uol.compass.ecommerce.controller.DatabaseController;
 import uol.compass.ecommerce.controller.InputController;
 import uol.compass.ecommerce.controller.MenuController;
 import uol.compass.ecommerce.model.Cart;
@@ -21,6 +22,8 @@ public class Menus {
     }
 
     public void showMainMenu(){
+        DatabaseController db = new DatabaseController();
+        db.createDatabase();
         this.option = -1;
         System.out.println("");
         System.out.println(HEADER);
