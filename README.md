@@ -51,6 +51,15 @@ Execute o comando
 ```
 Lembre-se de configurar de acordo com seu banco de dados para funcionar corretamente.
 
+## Build
+
+Para criar o arquivo jar usando maven
+
+```bash
+  mvn clean compile assembly:single
+
+```
+
 ## Stack utilizada
 
 **Back-end:** Java 17, MySQL 8.0
