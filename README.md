@@ -34,6 +34,22 @@ MYSQL_USER=root
 - Ter o Java 17 instalado na máquina.
 
 
+
+## Rodando localmente
+
+Faça o download da Jar
+
+```
+  |https://github.com/joao100101/Compass-ECommerce/releases/tag/challenge
+```
+
+Entre no Promt de Comando na pasta onde a Jar está localizada.
+
+Execute o comando
+```bash
+  java -jar CompassEcommerce-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
 ## Stack utilizada
 
 **Back-end:** Java 17, MySQL 8.0
