@@ -15,7 +15,7 @@ O sistema conta com um carrinho de compras onde o cliente adiciona os produtos q
 - Configuração da conexão com banco de dados em tempo de execução
 - Alterar o idioma do sistema na página de configurações em tempo de execução
 
-## Configuração Padrão do Banco de Dados
+## Configuração Padrão
 
 ```YML
 APP_LOCALE=en
@@ -49,6 +49,7 @@ Execute o comando
 ```bash
   java -jar CompassEcommerce-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
+Lembre-se de configurar de acordo com seu banco de dados para funcionar corretamente.
 
 ## Stack utilizada
 
