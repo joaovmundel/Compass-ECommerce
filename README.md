@@ -1,9 +1,13 @@
 
 # Sistema E-Commerce
 
+[English ReadMe](https://github.com/joaovmundel/Compass-ECommerce/blob/main/README%20(en).md)
+
 Um sistema de E-commerce para uma empresa que ajuda no gerenciamento do estoque contabilizando as vendas realizadas.
 
 O sistema conta com um carrinho de compras onde o cliente adiciona os produtos que deseja comprar e consegue visualizar o total a ser pago antes de confirmar a compra.
+
+
 
 ## Funcionalidades
 
@@ -64,7 +68,6 @@ Para criar o arquivo jar usando maven
 
 - Java 17
 - MySQL 8.0
-
 
 ## Autores
 
