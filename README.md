@@ -62,7 +62,8 @@ Para criar o arquivo jar usando maven
 
 ## Stack utilizada
 
-**Back-end:** Java 17, MySQL 8.0
+- Java 17
+- MySQL 8.0
 
 
 ## Autores
